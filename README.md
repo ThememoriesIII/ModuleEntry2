@@ -1,2 +1,2 @@
 # ModuleEntry2
-Make module for read game process and memory
+I create module for learn how to Read/Write memory and Make a simple bot
