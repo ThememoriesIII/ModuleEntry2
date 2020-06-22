@@ -1,5 +1,5 @@
 # ModuleEntry2/
-- I create module for learn how to Read/Write memory and Make a simple bot
+- I create modules for learn how to Read/Write memory and PatternScan(a algorithm i imprement to code is kmp pattern scan) 
 - Program Feature
 - 1.Search all object around player
 - 2.detect monster object and print monster structure
