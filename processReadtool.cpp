@@ -1,5 +1,5 @@
 #include "processReadtool.h"
-
+//need to uppdate all 32bit process to 64 bitprocess
 wchar_t* GetWC(const char* c)
 {
 	const size_t cSize = strlen(c) + 1;
