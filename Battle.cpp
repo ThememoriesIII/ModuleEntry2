@@ -50,6 +50,7 @@ void Battle::status_mob()
 			float mobx = 0;
 			float moby = 0;
 			mob.adr = *i;
+			/* here is plase you need to update address for get status character form main character in game */
 			ReadProcessMemory(GameHandle, (LPCVOID)(*i), &mob.code, 4, 0);
 			ReadProcessMemory(GameHandle, (LPCVOID)(*i + 0x04), &mob.id, 4, 0);
 			ReadProcessMemory(GameHandle, (LPCVOID)(*i + 0x428), &mob.name, 32, 0);
@@ -91,6 +92,7 @@ void Battle::sort_distan_mob()
 	//std::cout << "t2 run" << std::endl;
 	//while (1)
 	//{
+	/* need to update this thread for mutex lock this way is to old*/
 	mtx.lock();
 	if(!mob_finding.empty())
 	std::sort(mob_finding.begin(), mob_finding.end(), [](status a, status b) {
@@ -114,6 +116,7 @@ void Battle::player()
 	ReadProcessMemory(GameHandle, (LPCVOID)(BASE_ADR + 0x5A28F8), &exp, 4, 0);
 	ReadProcessMemory(GameHandle, (LPCVOID)(BASE_ADR + 0x5AC450), &maxexp, 4, 0);
 	mtx.lock();
+	/*need to find new way to print text to console cout to console is very slow and lock a thread to find mob and search*/
 	if (print_flag == false)
 	{
 		gotoxy(0, 10);
@@ -136,6 +139,7 @@ void Battle::print_mob()
 			int couter = 1;
 			int row = 20;
 			gotoxy(0, 20);
+			/*need to change iterator is esey to imprement but so slow to search you need to collect to heap and use pointer to collect data and search*/
 			for (std::vector<status>::iterator i = mob_finding.begin(); i != mob_finding.end(); ++i)
 			{
 				if (couter == 5)
@@ -174,6 +178,8 @@ void Battle::Monster()
 	std::thread t_mob[3];
 	while (1)
 	{
+		// thsi thread need too imprement need thread pool to imprement
+		// you need to try pub sub
 		t_mob[0] = std::thread(&Battle::status_mob, this);
 		t_mob[1] = std::thread(&Battle::FindMob, this);
 		t_mob[2] = std::thread(&Battle::sort_distan_mob, this);
@@ -191,6 +197,7 @@ void Battle::Status()
 	std::thread t_status[2];
 	while (1)
 	{
+		// i need to try new idea to use pub sub to this thread extrac this thread to two process firt process for get data with processread() fuction and secon process need to subscrite to first process if first process is change first process can send signal to secon process to do a process work
 		t_status[0] = std::thread(&Battle::player, this);
 		t_status[0].join();
 	}
@@ -206,6 +213,7 @@ void Battle::select_mob()
 	uintptr_t base_box;
 	if (!mob_finding.empty())
 	{
+		// need yo update this address to process under comment line
 		WriteProcessMemory(GameHandle, (LPVOID)(BASE_ADR + base_code), &mob_finding[0].id, 4, 0);
 		WriteProcessMemory(GameHandle, (LPVOID)(BASE_ADR + base_adr), &mob_finding[0].adr, 4, 0);
 
@@ -226,6 +234,7 @@ void Battle::Attack_Monster()
 	{
 		while (1)
 		{
+			//need to update mouse positiom under commemnt
 			PostMessageA(hWnd, WM_MOUSEMOVE, 1, MAKELPARAM(500, 130));
 			PostMessageA(hWnd, WM_LBUTTONDBLCLK, 1, MAKELPARAM(500, 130));
 			Sleep(1000);
@@ -236,6 +245,7 @@ void Battle::Attack_Monster()
 
 void Battle::Running(std::vector<std::string> name)
 {
+	//need to update sequen to thread
 	search_adr();
 	status_mob();
 	FindMob();
@@ -259,6 +269,7 @@ void Battle::Running(std::vector<std::string> name)
 
 void gotoxy(int x, int y)
 {
+	// need to change this fnunction to mnew console
 	COORD coord;
 	coord.X = x;
 	coord.Y = y;
